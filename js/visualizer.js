@@ -3,14 +3,20 @@ function Ball(x, y, r) {
     this.y = y;
     this.r = Math.random() * 20 + 20;
     
-    this.vx = Math.sin(Math.random() * 2 * Math.PI) * 200;
+    this.vx = Math.sin(Math.random() * 2 * Math.PI) * 400;
     this.vy = Math.random() * 200 + 600;
     
     //Random colors
 	var r = Math.random() * 255 >> 0;
 	var g = Math.random() * 255 >> 0;
 	var b = Math.random() * 255 >> 0;
-	this.color = "rgba(" + r + ", " + g + ", " + b + ", 0.5)";
+	
+	this.gradient = [
+	    [0, "white"], 
+	    [0.4, "rgba(255, 255, 255, 0.5)"], 
+	    [0.4, "rgba(" + r + ", " + g + ", " + b + ", 0.5)"],
+	    [1, "rgba(0, 0, 0, 0.3)"]
+	];
 }
 
 Ball.prototype = {
@@ -22,10 +28,9 @@ Ball.prototype = {
     draw: function(ctx) {		
 		//Time for some colors
 		var gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.r);
-		gradient.addColorStop(0, "white");
-		gradient.addColorStop(0.4, "white");
-		gradient.addColorStop(0.4, this.color);
-		gradient.addColorStop(1, "black");
+		this.gradient.forEach(function(g) {
+		    gradient.addColorStop(g[0], g[1]);
+		});
 		
 		ctx.beginPath();
 		ctx.fillStyle = gradient;
