@@ -92,21 +92,83 @@ textarea {
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
+html, body {
+    line-height: 0;
+    font-size: 0;
+    overflow: hidden;
+    position: relative;
+    
+    height: 100%;
+    width: 100%;
+    
+    background-color: black;
+}
 
+#visualizer {
+    background-color: black;
+}
 
+#controls {
+    overflow: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    
+    height: 100%;
+    width: 360px;
+    padding: 0px 20px;
+    
+    opacity: 0.9;
+    background-color: white;
+    
+    font-size: 16px;
+    line-height: 1.4em;
+}
 
+#controls .box  {
+    width: 100%;
+    margin-bottom: 20px;
+    border-top: 3px dotted #999;
+}
 
+#music-controls.box {
+    border-top: none;
+}
 
+#album-art.box {
+    position: absolute;
+    bottom: 0;
+    
+    height: 360px;
+    width: 360px;
+    
+    padding: 20px 0px;
+    margin-bottom: 0;
+}
 
+#album-art.box img {
+    opacity: 1;
+}
 
+#playlist ul {
+    list-style: none;
+    padding: 0;
+}
 
+#playlist ul li {
+    display: block;
+    padding: 5px;
+    margin: 5px auto;
+    background: #ccf;
+}
 
-
-
-
-
-
-
+.song-index {
+    display: block;
+    float: left;
+    border-right: 1px solid black;
+    padding-right: 5px;
+    margin-right: 5px;
+}
 
 
 /* ==========================================================================

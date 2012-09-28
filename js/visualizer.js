@@ -42,8 +42,6 @@ Ball.prototype = {
 function Visualizer (canvasId) {
      this.canvas = document.getElementById(canvasId);
      this.ctx    = this.canvas.getContext('2d');
-     this.width  = this.canvas.width;
-     this.height = this.canvas.height;
      
      this.balls = [];
      
@@ -52,14 +50,18 @@ function Visualizer (canvasId) {
 
 Visualizer.prototype = {
     constructor: Visualizer,
+    maximize: function() {
+        this.canvas.width = $(window).innerWidth();
+        this.canvas.height = $(window).innerHeight();
+    },
     draw: function() {
         // Draw background
         this.ctx.globalCompositeOperation = "source-over";
         this.ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
-    	this.ctx.fillRect(0, 0, this.width, this.height);
+    	this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
         
         this.balls = this.balls.filter(function(b) {
-            return b.x - b.r > 0 && b.x + b.r < this.width && b.y + b.r > 0 && b.y - b.r < this.height;
+            return b.x - b.r > 0 && b.x + b.r < this.canvas.width && b.y + b.r > 0 && b.y - b.r < this.canvas.height;
         }.bind(this));
         
         var now = Date.now();
@@ -78,14 +80,15 @@ Visualizer.prototype = {
         clearInterval(this.loop_id);
     },
     fire: function() {
+        console.log('fire');
         var r = Math.random(),
             g = Math.random(),
             b = Math.random(),
             speed = Math.random() * 200 + 600;
         for (var i = Math.random() * 10 + 10; i > 0; i--){
             this.balls.push(new Ball(
-                this.width / 2, 
-                this.height - 30, 
+                this.canvas.width / 2, 
+                this.canvas.height - 30, 
                 Math.random() * 20 + 20,
                 speed,
                 r, g, b

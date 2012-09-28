@@ -1,7 +1,13 @@
 $(document).ready(function() {
     var v = new Visualizer('visualizer');
+    v.maximize();
     v.start();
-    $('#fire').click(function(){
-        this.fire();        
-    }.bind(v));
+    
+    $(window).resize(function() {
+        v.maximize();
+    });
+    
+    $('#visualizer').click(function() {
+        v.fire();
+    });
 });
