@@ -186,6 +186,8 @@ html, body {
 }
 
 #album-art.box img {
+    height: 360px;
+    width: 360px;
     opacity: 1;
 }
 
