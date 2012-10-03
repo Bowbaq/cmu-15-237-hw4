@@ -135,6 +135,45 @@ html, body {
     border-top: none;
 }
 
+#search-widget {
+    width: 100%;
+    padding-top: 10px;
+}
+
+#search-widget input {
+    display: inline-block;
+    vertical-align: top;
+    
+    margin: 0;
+    padding: 5px 10px;
+    
+    border: 1px solid #999;
+}
+
+#search-widget input[type="text"] {
+    width: 82%; 
+    height: 20px;
+    
+    border: 1px solid #999;
+}
+
+#search-widget input[type="submit"] {
+    height: 32px;
+    margin-left: -5px;
+}
+
+#playlist ul {
+    list-style: none;
+    padding: 0;
+}
+
+#playlist ul li {
+    display: block;
+    padding: 5px;
+    margin: 5px auto;
+    background: #ccf;
+}
+
 #album-art.box {
     position: absolute;
     bottom: 0;
@@ -148,18 +187,6 @@ html, body {
 
 #album-art.box img {
     opacity: 1;
-}
-
-#playlist ul {
-    list-style: none;
-    padding: 0;
-}
-
-#playlist ul li {
-    display: block;
-    padding: 5px;
-    margin: 5px auto;
-    background: #ccf;
 }
 
 .song-index {
