@@ -5,7 +5,8 @@ var EightTracks = (function (et) {
         _base_url = 'http://8tracks.com/',
         _api_key = '',
         _user_token = '',
-        _logged_in = false
+        _logged_in = false,
+        _play_token = ''
     ;
     
     function _request(type, action, data, callback) {
@@ -47,14 +48,17 @@ var EightTracks = (function (et) {
             {
                 q: tags,
                 sort: "hot",
-                per_page: 10
+                per_page: 5
             },
             function(data) {
                 var mixes = [];
                 data.mixes.forEach(function(mix) {
                     mixes.push({
                         id: mix.id,
-                        cover: mix.cover_urls.sq500
+                        name: mix.name,
+                        cover: mix.cover_urls.sq500,
+                        url: mix.restful_url,
+                        desc: mix.description
                     });
                 });
                 callback(mixes);
@@ -64,7 +68,8 @@ var EightTracks = (function (et) {
     
     et.requestplay = function(mix, callback) {
         _request('GET', 'sets/new', {}, function(data) {
-            _request('GET', 'sets/' + data.play_token + '/play',
+            _play_token = data.play_token;
+            _request('GET', 'sets/' + _play_token + '/play',
                 {
                     mix_id: mix.id
                 },
@@ -73,6 +78,16 @@ var EightTracks = (function (et) {
                 }
             );
         });
+    };
+    
+    et.reportplayed = function(track_id, mix_id) {
+        _request('GET', 'sets/' + _play_token + '/report', 
+            {
+                mix_id: mix_id,
+                track_id: track_id
+            },
+            function(){}
+        );
     };
     
     return et;
