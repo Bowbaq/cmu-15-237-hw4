@@ -14,7 +14,6 @@ var SphereVisualizer = (function() {
 	var waves = [];
 	var colors = [];
 	var sphereHolder = new THREE.Object3D();
-	var perlin = new ImprovedNoise();
 	var noisePos = 0;
 	var freqByteData;
 	var timeByteData;

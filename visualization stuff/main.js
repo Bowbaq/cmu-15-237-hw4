@@ -18,9 +18,9 @@ $(document).ready(function() {
 
 	if(!is_chrome){
 		$('#loading').html("This demo requires <a href='https://www.google.com/chrome'>Google Chrome</a>.");
-	} else if(!is_webgl){
-		$('#loading').html('Your graphics card does not seem to support <a href="http://khronos.org/webgl/wiki/Getting_a_WebGL_Implementation">WebGL</a>.<br />' +
-		'Find out how to get it <a href="http://get.webgl.org/">here</a>, or try restarting your browser.');
+	// } else if(!is_webgl){
+// 		$('#loading').html('Your graphics card does not seem to support <a href="http://khronos.org/webgl/wiki/Getting_a_WebGL_Implementation">WebGL</a>.<br />' +
+// 		'Find out how to get it <a href="http://get.webgl.org/">here</a>, or try restarting your browser.');
 	}else {
 		$('#loading').html('<a id="loadsample">load sample mp3</a>');
 		init();
@@ -40,7 +40,7 @@ function init() {
 	renderer = new THREE.WebGLRenderer();
 	renderer.setSize(window.innerWidth, window.innerHeight);
 
-	container.appendChild(renderer.domElement);
+	//container.appendChild(renderer.domElement);
 
 	//add cool stats stuff for fps and ms to render each frame! cool!
 	stats = new Stats();
