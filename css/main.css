@@ -133,6 +133,62 @@ html, body {
 
 #music-controls.box {
     border-top: none;
+    height: 360px;
+    
+    background: #DDD url('../img/unknown.jpg');
+    background-size: contain;
+}
+
+#music-controls {
+    position: relative;
+}
+
+#controls-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    
+    width: 320px;
+    
+    margin: 10px;
+    padding: 10px;
+    
+    color: #EEE;
+    background-color: rgba(30, 30, 30, 0.3);
+    
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
+    border-radius: 5px;
+}
+
+#controls-bar:hover {
+    background-color: rgba(30, 30, 30, 0.9);
+}
+
+#progress-info {
+    height: 30px;
+}
+
+#time-elapsed {
+    float: left;
+    width: 20px;
+}
+
+#time-remaining {
+    float: right;
+    width: 20px;
+}
+
+#progress-bar {    
+    height: 4px;
+    
+    background-color: black;
+    
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -o-border-radius: 2px;
+    border-radius: 2px;
 }
 
 #search-widget {
@@ -173,32 +229,6 @@ html, body {
     margin: 5px auto;
     background: #ccf;
 }
-
-#album-art.box {
-    position: absolute;
-    bottom: 0;
-    
-    height: 360px;
-    width: 360px;
-    
-    padding: 20px 0px;
-    margin-bottom: 0;
-}
-
-#album-art.box img {
-    height: 360px;
-    width: 360px;
-    opacity: 1;
-}
-
-.song-index {
-    display: block;
-    float: left;
-    border-right: 1px solid black;
-    padding-right: 5px;
-    margin-right: 5px;
-}
-
 
 /* ==========================================================================
    Helper classes
