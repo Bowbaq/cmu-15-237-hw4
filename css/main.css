@@ -135,7 +135,9 @@ html, body {
     border-top: none;
     height: 360px;
     
-    background: #DDD url('../img/unknown.jpg');
+    margin-top: 20px;
+    
+    background-image: url('../img/unknown.jpg');
     background-size: contain;
 }
 
