@@ -13,6 +13,7 @@
         <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
         <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/font-awesome.css">
         <link rel="stylesheet" href="css/main.css">
         <script src="js/vendor/modernizr-2.6.1.min.js"></script>
     </head>
@@ -32,31 +33,21 @@
                             <span id="track-name">Marvins room</span>
                             <span id="track-artist">Drake</span>
                         </div>
-                        <div>
+                        <!-- <div>
                             <span id="track-album-label">Album:</span><span id="track-album">Take care</span>
                             <span id="track-year-label">Year:</span><span id="track-year">2011</span>
-                        </div>
+                        </div> -->
                     </div>
-                    <div id="progress-info">
-                        <span id="time-elapsed">0:00</span>
-                        <div id="progress-bar"><div id="progress-bar-inner"></div></div>
-                        <span id="time-remaining">10:29</span>
-                    </div>
-                    <div id="buttons">
-                        <div id="play-pause" class="pause">
-                            Pause
-                        </div>
-                        <div id="track-skip">
-                            Skip track
-                        </div>
-                        <div id="mix-skip">
-                            Skip mix
-                        </div>
-                        <div id="volume">
-                            <i class="volume-icon"></i>
-                            <div id="volume-bar">
-                                <div id="volume-bar-inner"></div>
-                            </div>
+                    <meter id="progress-bar" min="0" max="300" value="64"></meter>
+                    <div id="buttons" class="clearfix">
+                        <i id="play-pause" class="icon-pause pull-left"></i>
+                        <i id="track-skip" class="icon-fast-forward pull-left"></i>
+                        <!-- <i id="mix-skip" class="icon-arrow-right pull-left"></i> -->
+                        <div id="volume" class="pull-right">
+                            <i class="icon-volume-up pull-left"></i>
+                            <form>
+                                <input id="volume-slider" type="range" min="0" max="100" value="80" />
+                            </form>​
                         </div>
                     </div>
                 </div>
@@ -65,14 +56,12 @@
                 <form id="search-form" accept-charset="utf-8">
                     <div id="search-widget">
                         <input type="text" name="search" value="" id="search" />
-                        <input type="submit" value="Go">
+                        <button type="submit" value=""><i class="icon-search"></i></button>
                     </div>
                 </form>
             </div>
             <div id="playlist" class="box">
-                <ul>
-                    
-                </ul>
+                <ul></ul>
             </div>
         </div>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js"></script>

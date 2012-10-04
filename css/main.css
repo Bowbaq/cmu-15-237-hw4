@@ -153,7 +153,7 @@ html, body {
     margin: 10px;
     padding: 10px;
     
-    color: #EEE;
+    color: white;
     background-color: rgba(30, 30, 30, 0.3);
     
     -webkit-border-radius: 5px;
@@ -166,24 +166,96 @@ html, body {
     background-color: rgba(30, 30, 30, 0.9);
 }
 
-#progress-info {
-    height: 30px;
+#track-info {
+    margin-bottom: 10px;
 }
 
-#time-elapsed {
-    float: left;
-    width: 20px;
+#track-name {
+    font-size: 26px;
+    font-weight: bold;
 }
 
-#time-remaining {
-    float: right;
-    width: 20px;
+#track-artist {
+    font-size: 18px;
 }
 
-#progress-bar {    
+#progress-bar {
+    display: block;
+    background-color: black;
+    
+    height:8px;
+    width: 100%;
+    
+    padding: 2px;
+    
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+}
+
+#progress-bar::-webkit-meter-bar {
+    background: black;
+}
+
+#progress-bar::-webkit-meter-optimum-value {
+    height: 4px;
+    background: white;
+    
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -o-border-radius: 2px;
+    border-radius: 2px;
+}
+
+#buttons {
+    font-size: 30px;
+    padding-top: 10px;
+}
+
+#buttons i {
+    display: block;
+    position: relative;
+    
+    width: 40px;
+    height: 40px;
+    
+    margin-right: 10px;
+}
+
+#buttons i:before {
+    position: absolute;
+    top: 13px;
+    left: 5px;
+    
+    font-size: 40px;
+}
+
+#volume {
+    height: 40px;
+}
+
+#volume i {
+    margin: 0;
+}
+
+#volume i:before {
+    font-size: 20px;
+}
+
+#volume form {
+    height: 4px;
+    margin-left: 40px;
+    padding: 18px 0px;
+}
+
+#volume input[type="range"] {
+    display: block;
+    
+    width: 70px;
     height: 4px;
     
-    background-color: black;
+    -webkit-appearance:none; 
     
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
@@ -196,7 +268,7 @@ html, body {
     padding-top: 10px;
 }
 
-#search-widget input {
+#search-widget input, #search-widget button {
     display: inline-block;
     vertical-align: top;
     
@@ -213,7 +285,7 @@ html, body {
     border: 1px solid #999;
 }
 
-#search-widget input[type="submit"] {
+#search-widget button[type="submit"] {
     height: 32px;
     margin-left: -5px;
 }
@@ -233,6 +305,14 @@ html, body {
 /* ==========================================================================
    Helper classes
    ========================================================================== */
+
+.pull-left {
+    float: left;
+}
+
+.pull-right {
+    float: right;
+}
 
 /*
  * Image replacement
