@@ -23,11 +23,13 @@ var ML = (function(ml) {
             }
         });
         
+        Visualizer.reset(analyser);
+        
         source = context.createMediaElementSource(audio);
         source.connect(analyser);
         analyser.connect(gain);
         gain.connect(context.destination);
-        gain.gain.value = 0.5;
+        gain.gain.value = $('#volume-slider').attr('value');
         
         sound = {
             "node": audio,
@@ -53,12 +55,15 @@ var ML = (function(ml) {
                     }, 1000
                 );
             }
+            
+            Visualizer.animate();
         }
     };
     
     ml.pause = function() {
         if (sound !== null) {
             sound.source.mediaElement.pause();
+            Visualizer.stop();
         }
     };
     
@@ -88,6 +93,10 @@ var ML = (function(ml) {
     
     ml.setProgressReset = function(callback) {
         progress_reset = callback;
+    };
+    
+    ml.setVisualizer = function(visualizer) {
+        _visualizer = visualizer;
     };
     
     return ml;

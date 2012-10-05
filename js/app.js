@@ -5,18 +5,12 @@ var App = (function (app) {
     
     // Initialze visualizer
     function setupVisualizer() {
-        v = new Visualizer('visualizer');
-        v.maximize();
-        v.start();
+        Visualizer.init('visualizer');
+        Visualizer.maximize();
 
         // Resize canvas on window resize
         $(window).resize(function() {
-            v.maximize();
-        });
-
-        // Fire on click
-        $('#visualizer').click(function() {
-            v.fire();
+            Visualizer.maximize();
         });
     }
     
@@ -37,17 +31,15 @@ var App = (function (app) {
             // Stop playing current sound on new search
             ML.clear();
             EightTracks.find(search, function(mixes) {
-                var sound;
-                     
                 if(mixes.length > 0) {
                     updatePlaylist(mixes);
                     updateCover(mixes[0].cover);
                     
                     EightTracks.requestplay(mixes[0], function(set) {
-                        updateTrackInfo(set.track);
-                        
-                        ML.load(set.track.url);
+                        var sound = ML.load(set.track.url);
                         ML.play();
+                                                
+                        updateTrackInfo(set.track);
                         
                         // Report song play after 30s
                         setTimeout(function() {
@@ -108,7 +100,6 @@ var App = (function (app) {
     }
     
     function updateTrackInfo(track) {
-        console.log(track);
         $('#track-name').text(track.name);
         $('#track-artist').text(track.performer);
     }
