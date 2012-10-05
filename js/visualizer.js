@@ -1,5 +1,9 @@
 function Ball(x, y, r, speed, fr, fg, fb) {
     var theta = Math.random() * 2 * Math.PI;
+    if(r > 50) {
+        r = 50;
+    }
+    
     this.x = x;
     this.y = y;
     this.r = r;
