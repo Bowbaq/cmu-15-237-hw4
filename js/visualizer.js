@@ -29,6 +29,7 @@ Ball.prototype = {
     update: function(delta) {
         this.x += (this.vx * delta);
         this.y -= (this.vy * delta);
+        this.r -= (3 * delta);
     },
     draw: function(ctx) {		
 		//Time for some colors
@@ -72,15 +73,15 @@ var Visualizer = (function(viz) {
         
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        ctx.fillStyle = "red";
-        for (var i = 0; i < timeByteData.length; i++) {
-           ctx.fillRect(450 + i, 200 - timeByteData[i] / 2, 1, timeByteData[i]);
-        }
+        // // ctx.fillStyle = "red";
+        // for (var i = 0; i < timeByteData.length; i++) {
+        //    // ctx.fillRect(450 + i, 200 - timeByteData[i] / 2, 1, timeByteData[i]);
+        // }
         
-        ctx.fillStyle = "orange";
+        // ctx.fillStyle = "orange";
         for (var i = 0; i < freqByteData.length; i++) {
             fqavg += freqByteData[i];
-            ctx.fillRect(450 + i, 700 - freqByteData[i], 1, freqByteData[i]);
+            // ctx.fillRect(450 + i, 700 - freqByteData[i], 1, freqByteData[i]);
         }
         
         fqavg /= freqByteData.length;
@@ -98,8 +99,8 @@ var Visualizer = (function(viz) {
             fire();
         };
         
-        ctx.fillStyle = "blue";
-        ctx.fillRect(450, 700 - fqavg, freqByteData.length, 2);
+        // ctx.fillStyle = "blue";
+        // ctx.fillRect(450, 700 - fqavg, freqByteData.length, 2);
         
         draw();
     }
@@ -113,25 +114,38 @@ var Visualizer = (function(viz) {
     }
     
     function inBounds(b) {
-        return b.x - b.r > 0 && b.x + b.r < canvas.width && b.y + b.r > 0 && b.y - b.r < canvas.height;
+        return b.x - b.r > 0 && b.x + b.r < canvas.width && b.y - b.r > 0 && b.y + b.r < canvas.height;
+    }
+    
+    function tooSmall(b) {
+        return b.r > 2;
     }
     
     function draw() {
         var now = Date.now();
         var delta = (now - last_time) / 1000;
-        var b;
+        var b, tmp;
         
         // Draw background
         ctx.globalCompositeOperation = "source-over";
         ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
     	ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        balls = balls.filter(inBounds);
-        
         last_time = now;
+        
+        balls = balls.filter(tooSmall);
         
         for (var i = balls.length - 1; i >= 0; i--){
             b = balls[i];
+            if(!inBounds(b)) {
+                b.vx *= -1;
+                b.vy *= -1;
+            }
+            
+            if(b.r < 2) {
+                delete balls[i];
+            }
+            
             b.update(delta);
             b.draw(ctx);
         };
