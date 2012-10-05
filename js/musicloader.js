@@ -9,6 +9,23 @@ var ML = (function(ml) {
         song_end = null
     ;
     
+    function onLoadedData() {
+        if(progress_reset !== null) {
+            progress_reset(Math.ceil(sound.node.duration));
+        }
+    }
+    
+    function onSongEnded() {
+        if(song_end !== null) {
+            ml.pause();
+            song_end();
+        }
+    }
+    
+    function onProgress() {
+         progress_callback(Math.ceil(sound.node.currentTime));
+    }
+    
     ml.load = function(url) {
         var source,
             audio = document.createElement('audio'),
@@ -18,18 +35,8 @@ var ML = (function(ml) {
         
         audio.setAttribute('src', url);
         audio.load();
-        audio.addEventListener('loadeddata', function() {
-            if(progress_reset !== null) {
-                progress_reset(Math.ceil(audio.duration));
-            }
-        });
-        
-        audio.addEventListener('ended', function() {
-            if(song_end !== null) {
-                this.pause();
-                song_end();
-            }
-        });
+        audio.addEventListener('loadeddata', onLoadedData);
+        audio.addEventListener('ended', onSongEnded);
         
         Visualizer.reset(analyser);
         
@@ -57,11 +64,7 @@ var ML = (function(ml) {
                 if(progress_interval !== null) {
                     clearInterval(progress_interval);
                 }
-                progress_interval = setInterval(
-                    function() {
-                        progress_callback(Math.ceil(sound.node.currentTime));       
-                    }, 1000
-                );
+                progress_interval = setInterval(onProgress, 1000);
             }
             
             Visualizer.animate();

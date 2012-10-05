@@ -112,24 +112,29 @@ var Visualizer = (function(viz) {
         }
     }
     
+    function inBounds(b) {
+        return b.x - b.r > 0 && b.x + b.r < canvas.width && b.y + b.r > 0 && b.y - b.r < canvas.height;
+    }
+    
     function draw() {
         var now = Date.now();
         var delta = (now - last_time) / 1000;
+        var b;
         
         // Draw background
         ctx.globalCompositeOperation = "source-over";
         ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
     	ctx.fillRect(0, 0, canvas.width, canvas.height);
         
-        balls = balls.filter(function(b) {
-            return b.x - b.r > 0 && b.x + b.r < canvas.width && b.y + b.r > 0 && b.y - b.r < canvas.height;
-        });
+        balls = balls.filter(inBounds);
         
         last_time = now;
-        balls.forEach(function(b) {
-           b.update(delta);
-           b.draw(ctx); 
-        });
+        
+        for (var i = balls.length - 1; i >= 0; i--){
+            b = balls[i];
+            b.update(delta);
+            b.draw(ctx);
+        };
     };
     
     function fire() {
