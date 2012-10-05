@@ -1,10 +1,54 @@
+function Ball(x, y, r, speed, fr, fg, fb) {
+    this.x = x;
+    this.y = y;
+    this.r = r;
+    
+    this.vx = Math.sin(Math.random() * 2 * Math.PI) * 400;
+    this.vy = speed - 10 * this.r;
+    
+    //Random colors
+	var r = fr * 255 >> 0;
+	var g = fg * 255 >> 0;
+	var b = fb * 255 >> 0;
+	
+	this.gradient = [
+	    [0, "white"], 
+	    [0.4, "rgba(255, 255, 255, 0.5)"], 
+	    [0.4, "rgba(" + r + ", " + g + ", " + b + ", 0.5)"],
+	    [1, "rgba(0, 0, 0, 0.3)"]
+	];
+}
+
+Ball.prototype = {
+    constructor: Ball,
+    update: function(delta) {
+        this.x += (this.vx * delta);
+        this.y -= (this.vy * delta);
+    },
+    draw: function(ctx) {		
+		//Time for some colors
+		var gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.r);
+		this.gradient.forEach(function(g) {
+		    gradient.addColorStop(g[0], g[1]);
+		});
+		
+		ctx.beginPath();
+		ctx.fillStyle = gradient;
+		ctx.arc(this.x, this.y, this.r, Math.PI * 2, false);
+		ctx.fill();
+    }
+};
+
 var Visualizer = (function(viz) {
     var canvas, 
         ctx,
         freqByteData,
         timeByteData,
         animate = false,
-        analyser
+        analyser,
+        beatDetect = [],
+        balls = [],
+        last_time = Date.now()
     ;
     
     function update() {
@@ -14,6 +58,7 @@ var Visualizer = (function(viz) {
     }
     
     function render() {
+        var fqavg = 0, pastavg = 0;
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         ctx.fillStyle = "red";
@@ -23,8 +68,29 @@ var Visualizer = (function(viz) {
         
         ctx.fillStyle = "orange";
         for (var i = 0; i < freqByteData.length; i++) {
-           ctx.fillRect(450 + i, 700 - freqByteData[i], 1, freqByteData[i]);
+            fqavg += freqByteData[i];
+            ctx.fillRect(450 + i, 700 - freqByteData[i], 1, freqByteData[i]);
         }
+        
+        fqavg /= freqByteData.length;
+        beatDetect.push(fqavg);
+        if(beatDetect.length > 10) {
+            beatDetect.shift();
+        }
+        
+        for (var i = 0; i  < beatDetect.length - 1; i++) {
+            pastavg += beatDetect[i];
+        };
+        pastavg /= beatDetect.length - 1;
+        
+        if (pastavg - fqavg > 10) {
+            fire();
+        };
+        
+        ctx.fillStyle = "blue";
+        ctx.fillRect(450, 700 - fqavg, freqByteData.length, 2);
+        
+        draw();
     }
     
     function doAnimate() {
@@ -34,6 +100,42 @@ var Visualizer = (function(viz) {
             update();
         }
     }
+    
+    function draw() {
+        var now = Date.now();
+        var delta = (now - last_time) / 1000;
+        
+        // Draw background
+        ctx.globalCompositeOperation = "source-over";
+        ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+    	ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        balls = balls.filter(function(b) {
+            return b.x - b.r > 0 && b.x + b.r < canvas.width && b.y + b.r > 0 && b.y - b.r < canvas.height;
+        });
+        
+        last_time = now;
+        balls.forEach(function(b) {
+           b.update(delta);
+           b.draw(ctx); 
+        });
+    };
+    
+    function fire() {
+        var r = Math.random(),
+            g = Math.random(),
+            b = Math.random(),
+            speed = Math.random() * 200 + 600;
+        for (var i = Math.random() * 10 + 10; i > 0; i--){
+            balls.push(new Ball(
+                canvas.width / 2, 
+                canvas.height - 30, 
+                Math.random() * 20 + 20,
+                speed,
+                r, g, b
+            ));
+        };
+    };
         
     viz.init = function(canvas_id) {
         canvas = document.getElementById(canvas_id);
@@ -49,6 +151,7 @@ var Visualizer = (function(viz) {
     
     viz.animate = function() {
         animate = true;
+        last_time = Date.now();
         doAnimate();
     };
     
