@@ -1,10 +1,11 @@
 function Ball(x, y, r, speed, fr, fg, fb) {
+    var theta = Math.random() * 2 * Math.PI;
     this.x = x;
     this.y = y;
     this.r = r;
     
-    this.vx = Math.sin(Math.random() * 2 * Math.PI) * 400;
-    this.vy = speed - 10 * this.r;
+    this.vx = (speed - 6 * this.r) * Math.sin(theta);
+    this.vy = (speed - 6 * this.r) * Math.cos(theta);
     
     //Random colors
 	var r = fr * 255 >> 0;
@@ -134,8 +135,8 @@ var Visualizer = (function(viz) {
             speed = Math.random() * 200 + 600;
         for (var i = Math.random() * 10 + 10; i > 0; i--){
             balls.push(new Ball(
-                Math.random() * canvas.width, 
-                Math.random() * canvas.height, 
+                canvas.width / 2, 
+                canvas.height / 2, 
                 15 / size_factor,
                 speed,
                 r, g, b
