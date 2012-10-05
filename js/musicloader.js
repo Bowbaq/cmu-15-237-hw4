@@ -5,7 +5,8 @@ var ML = (function(ml) {
         sound = null,
         progress_callback = null,
         progress_reset = null,
-        progress_interval = null
+        progress_interval = null,
+        song_end = null
     ;
     
     ml.load = function(url) {
@@ -20,6 +21,13 @@ var ML = (function(ml) {
         audio.addEventListener('loadeddata', function() {
             if(progress_reset !== null) {
                 progress_reset(Math.ceil(audio.duration));
+            }
+        });
+        
+        audio.addEventListener('ended', function() {
+            if(song_end !== null) {
+                this.pause();
+                song_end();
             }
         });
         
@@ -95,8 +103,8 @@ var ML = (function(ml) {
         progress_reset = callback;
     };
     
-    ml.setVisualizer = function(visualizer) {
-        _visualizer = visualizer;
+    ml.setSongEnd = function(callback) {
+        song_end = callback;
     };
     
     return ml;

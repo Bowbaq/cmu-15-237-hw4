@@ -48,7 +48,8 @@ var Visualizer = (function(viz) {
         analyser,
         beatDetect = [],
         balls = [],
-        last_time = Date.now()
+        last_time = Date.now(),
+        size_factor = 0
     ;
     
     function update() {
@@ -58,7 +59,12 @@ var Visualizer = (function(viz) {
     }
     
     function render() {
-        var fqavg = 0, pastavg = 0;
+        var fqavg = 0, pastavg = 0,
+            max = Math.max.apply(null, timeByteData), min = Math.min.apply(null, timeByteData)
+        ;
+        
+        size_factor = (max - min) / max;
+        
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
         ctx.fillStyle = "red";
@@ -128,9 +134,9 @@ var Visualizer = (function(viz) {
             speed = Math.random() * 200 + 600;
         for (var i = Math.random() * 10 + 10; i > 0; i--){
             balls.push(new Ball(
-                canvas.width / 2, 
-                canvas.height - 30, 
-                Math.random() * 20 + 20,
+                Math.random() * canvas.width, 
+                Math.random() * canvas.height, 
+                15 / size_factor,
                 speed,
                 r, g, b
             ));

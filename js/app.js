@@ -1,7 +1,7 @@
 var App = (function (app) {
     'use strict';
     
-    var v;
+    var _mixes = [];
     
     // Initialze visualizer
     function setupVisualizer() {
@@ -32,20 +32,9 @@ var App = (function (app) {
             ML.clear();
             EightTracks.find(search, function(mixes) {
                 if(mixes.length > 0) {
+                    _mixes = mixes;
                     updatePlaylist(mixes);
-                    updateCover(mixes[0].cover);
-                    
-                    EightTracks.requestplay(mixes[0], function(set) {
-                        var sound = ML.load(set.track.url);
-                        ML.play();
-                                                
-                        updateTrackInfo(set.track);
-                        
-                        // Report song play after 30s
-                        setTimeout(function() {
-                            EightTracks.reportplayed(mixes[0].id, set.track.id);
-                        }, 30 * 1000);
-                    });
+                    nextMix();
                 } else {
                     $('#playlist ul').html("<li>No results found</li>");
                 }
@@ -68,6 +57,9 @@ var App = (function (app) {
             that.toggleClass('icon-pause icon-play');
         });
         
+        // Setup next track button
+        $('#track-skip').click(nextSong);
+        
         // Hook up volume slider
         $('#volume-slider').change(function(e) {
             var val = e.srcElement.value;
@@ -89,9 +81,12 @@ var App = (function (app) {
             $('#progress-bar').attr('value', 0);
             $('#progress-bar').attr('max', duration);
         });
+        
+        ML.setSongEnd(nextSong);
     }
     
-    function updateCover(url) {
+    function updateCover() {
+        var url = _mixes[0].cover;
         if(url !== undefined && url !== null && url !== '') {
             $('#music-controls').css('background-image', 'url("' + url + '")');
         } else {
@@ -113,6 +108,44 @@ var App = (function (app) {
         mixes.forEach(function(mix) {
             list.append(item.replace('{{url}}', mix.url).replace('{{desc}}', mix.desc).replace('{{desc}}', mix.desc).replace('{{name}}', mix.name));
         });
+    }
+    
+    function nextMix() {
+        var mix;
+        if (_mixes.length > 0) {
+            updateCover();
+            nextSong();
+        } else {
+            // Fetch more mixes?
+        }
+    }
+    
+    function nextSong() {
+        if (_mixes.length > 0) {
+            if(_mixes[0].set === undefined) {
+                EightTracks.requestplay(_mixes[0], playSong);
+            } else if(_mixes[0].set.at_end) {
+                EightTracks.requestnext(_mixes[0], playSong);
+            } else {
+                // Next mix
+                _mixes.shift();
+                nextMix();
+            }
+        }
+    }
+    
+    function playSong(set) {
+        _mixes[0].set = set;
+        ML.pause();
+        ML.load(set.track.url);
+        ML.play();
+
+        updateTrackInfo(set.track);
+
+        // Report song play after 30s
+        setTimeout(function() {
+            EightTracks.reportplayed(_mixes[0].id, set.track.id);
+        }, 30 * 1000);
     }
 
     // Boostrap the app

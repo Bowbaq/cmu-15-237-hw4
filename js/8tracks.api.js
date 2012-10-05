@@ -80,6 +80,17 @@ var EightTracks = (function (et) {
         });
     };
     
+    et.requestnext = function(mix, callback) {
+        _request('GET', 'sets/' + _play_token + '/next',
+            {
+                mix_id: mix.id
+            },
+            function(data) {
+                callback(data.set);
+            }
+        );
+    };
+    
     et.reportplayed = function(track_id, mix_id) {
         _request('GET', 'sets/' + _play_token + '/report', 
             {
