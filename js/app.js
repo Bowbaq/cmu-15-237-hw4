@@ -33,7 +33,6 @@ var App = (function (app) {
             EightTracks.find(search, function(mixes) {
                 if(mixes.length > 0) {
                     _mixes = mixes;
-                    updatePlaylist(mixes);
                     nextMix();
                 } else {
                     $('#playlist ul').html("<li>No results found</li>");
@@ -113,6 +112,7 @@ var App = (function (app) {
     function nextMix() {
         var mix;
         if (_mixes.length > 0) {
+            updatePlaylist(_mixes);
             updateCover();
             nextSong();
         } else {
@@ -124,7 +124,7 @@ var App = (function (app) {
         if (_mixes.length > 0) {
             if(_mixes[0].set === undefined) {
                 EightTracks.requestplay(_mixes[0], playSong);
-            } else if(_mixes[0].set.at_end) {
+            } else if(!_mixes[0].set.at_end) {
                 EightTracks.requestnext(_mixes[0], playSong);
             } else {
                 // Next mix
