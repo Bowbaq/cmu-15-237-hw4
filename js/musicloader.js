@@ -42,7 +42,7 @@ var ML = (function(ml) {
         }
     };
     
-    ml.clear = function() {
+    ml.remove = function() {
         if(sound !== null) {
             this.stop();
             sound = null;
