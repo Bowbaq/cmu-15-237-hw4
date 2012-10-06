@@ -78,7 +78,7 @@ var ML = (function(ml) {
         }
     };
     
-    ml.clear = function() {
+    ml.remove = function() {
         if(sound !== null) {
             this.pause();
             sound = null;
