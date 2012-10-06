@@ -73,9 +73,9 @@ var Visualizer = (function(viz) {
         
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-        // // ctx.fillStyle = "red";
+        // ctx.fillStyle = "red";
         // for (var i = 0; i < timeByteData.length; i++) {
-        //    // ctx.fillRect(450 + i, 200 - timeByteData[i] / 2, 1, timeByteData[i]);
+        //    ctx.fillRect(450 + i, 200 - timeByteData[i] / 2, 1, timeByteData[i]);
         // }
         
         // ctx.fillStyle = "orange";
@@ -117,9 +117,9 @@ var Visualizer = (function(viz) {
         return b.x - b.r > 0 && b.x + b.r < canvas.width && b.y - b.r > 0 && b.y + b.r < canvas.height;
     }
     
-    function tooSmall(b) {
-        return b.r > 2;
-    }
+    // function tooSmall(b) {
+    //     return b.r > 2;
+    // }
     
     function draw() {
         var now = Date.now();
@@ -133,18 +133,18 @@ var Visualizer = (function(viz) {
         
         last_time = now;
         
-        balls = balls.filter(tooSmall);
+        balls = balls.filter(inBounds);
         
         for (var i = balls.length - 1; i >= 0; i--){
             b = balls[i];
-            if(!inBounds(b)) {
-                b.vx *= -1;
-                b.vy *= -1;
-            }
+            // if(!inBounds(b)) {
+            //     b.vx *= -1;
+            //     b.vy *= -1;
+            // }
             
-            if(b.r < 2) {
-                delete balls[i];
-            }
+            // if(b.r < 2) {
+            //     delete balls[i];
+            // }
             
             b.update(delta);
             b.draw(ctx);
