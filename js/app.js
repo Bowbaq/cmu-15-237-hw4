@@ -27,6 +27,9 @@ var App = (function (app) {
             if(0 == search.trim().length) {
                 return false;
             }
+            
+            // Show the control bar on the first search
+            $('#controls-bar').removeClass('visuallyhidden');
 
             // Stop playing current sound on new search
             ML.clear();
@@ -61,7 +64,7 @@ var App = (function (app) {
         
         // Hook up volume slider
         $('#volume-slider').change(function(e) {
-            var val = e.srcElement.value;
+            var val = $(this).val();
             ML.setVolume(val);
             
             if (0 == val) {
@@ -69,6 +72,12 @@ var App = (function (app) {
             } else {
                 $('#volume-icon').removeClass('icon-volume-off').addClass('icon-volume-up');
             }
+        });
+        // Hook up volume icon
+        $('#volume-icon').click(function() {
+            var slider = $('#volume-slider');
+            slider.attr('value', 0);
+            slider.trigger('change');
         });
         
         // Hook up progress bar
