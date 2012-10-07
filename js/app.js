@@ -109,13 +109,26 @@ var App = (function (app) {
     
     function updatePlaylist(mixes) {
         var list = $('#playlist > ul'),
-            item = '<li><a href="{{url}}" alt="{{desc}}" title="{{desc}}">{{name}}</a></li>\n'
+            item = '<li><a href="#" alt="{{desc}}" title="{{desc}}"><i class="{{class}}"></i>{{name}}</a></li>\n',
+            firstMix = mixes.shift()
         ;
         
         list.html('');
         mixes.forEach(function(mix) {
-            list.append(item.replace('{{url}}', mix.url).replace('{{desc}}', mix.desc).replace('{{desc}}', mix.desc).replace('{{name}}', mix.name));
+            list.append(
+                item.replace('{{desc}}', mix.desc)
+                    .replace('{{desc}}', mix.desc)
+                    .replace('{{name}}', mix.name)
+                    .replace('{{class}}', 'icon-play hover-show')
+                );
         });
+		
+		list.prepend(
+		    item.replace('{{desc}}', firstMix.desc)
+		    .replace('{{desc}}', firstMix.desc)
+		    .replace('{{name}}', firstMix.name)
+		    .replace('{{class}}', 'icon-music')
+		);
     }
     
     function nextMix() {

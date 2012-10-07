@@ -118,7 +118,7 @@ html, body {
     padding: 0px 20px;
     margin: 10px;
     
-    background-color: white;
+    background-color: rgba(50, 50, 50, 0.8);
     
     font-size: 16px;
     line-height: 1.4em;
@@ -132,8 +132,8 @@ html, body {
 #controls .box  {
     width: 100%;
     margin-bottom: 20px;
-    border-top: 3px dotted #999;
-}
+/*    border-top: 1px solid rgba(200, 200, 200, 0.5);
+*/}
 
 #music-controls.box {
     border-top: none;
@@ -143,6 +143,11 @@ html, body {
     
     background-image: url('../img/unknown.jpg');
     background-size: contain;
+    
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -o-border-radius: 10px;
+    border-radius: 10px;
 }
 
 #music-controls {
@@ -285,7 +290,6 @@ html, body {
 
 #search-widget {
     width: 100%;
-    padding-top: 10px;
 }
 
 #search-widget input, #search-widget button {
@@ -303,11 +307,35 @@ html, body {
     height: 20px;
     
     border: 1px solid #999;
+    
+    -webkit-border-top-left-radius: 15px;
+    -moz-border-top-left-radius: 15px;
+    -o-border-top-left-radius: 15px;
+    border-top-left-radius: 15px;
+    
+    -webkit-border-bottom-left-radius: 15px;
+    -moz-border-bottom-left-radius: 15px;
+    -o-border-bottom-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+}
+
+#search-widget input[type="text"]:focus {
+    outline: none;
 }
 
 #search-widget button[type="submit"] {
     height: 32px;
     margin-left: -5px;
+    
+    -webkit-border-top-right-radius: 15px;
+    -moz-border-top-right-radius: 15px;
+    -o-border-top-right-radius: 15px;
+    border-top-right-radius: 15px;
+    
+    -webkit-border-bottom-right-radius: 15px;
+    -moz-border-bottom-right-radius: 15px;
+    -o-border-bottom-right-radius: 15px;
+    border-bottom-right-radius: 15px;
 }
 
 #playlist ul {
@@ -317,9 +345,28 @@ html, body {
 
 #playlist ul li {
     display: block;
-    padding: 5px;
-    margin: 5px auto;
-    background: #ccf;
+    margin: 15px auto;
+    text-align: center;
+}
+
+#playlist li a {
+    display: inline-block;
+    width: 100%;
+}
+
+#playlist i {
+    position: absolute;
+    left: 10px;
+    
+    font-size: 15px;
+}
+
+#playlist i.hover-show {
+    visibility: hidden;
+}
+
+#playlist a:hover i.hover-show, #playlist a:active i.hover-show {
+    visibility: visible;
 }
 
 /* ==========================================================================

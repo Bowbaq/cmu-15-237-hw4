@@ -77,23 +77,21 @@ var Visualizer = (function(viz) {
         balls = [],
         last_time = Date.now(),
         size_factor = 0,
-        before_last_variance = 0, last_variance = 0,
+        variances = [0, 0],
         pool = new BallPool()
     ;
     
     function update() {
+        var max = Math.max.apply(null, timeByteData), min = Math.min.apply(null, timeByteData),
+            fqSum = 0, fqSqSum = 0, varAvg = 0, before_last_variance, last_variance, variance,
+            length, f
+        ;
+        
         analyser.smoothingTimeConstant = 0.1;
 		analyser.getByteFrequencyData(freqByteData);
 		analyser.getByteTimeDomainData(timeByteData);
-    }
-    
-    function render() {
-        var max = Math.max.apply(null, timeByteData), min = Math.min.apply(null, timeByteData),
-            fqSum = 0, fqSqSum = 0, variance, f,
-            length
-        ;
-        
-        length = freqByteData.length;
+		
+		length = freqByteData.length;
         for (var i = 0; i < length; i++) {
             f = freqByteData[i];
             fqSum += f;
@@ -101,23 +99,32 @@ var Visualizer = (function(viz) {
         }
         
         size_factor = (max - min) / max;
-        variance = (length * fqSqSum - fqSum * fqSum) / (length * (length - 1)); 
         
-        if(before_last_variance < last_variance && last_variance > variance) {
+        variance = (length * fqSqSum - fqSum * fqSum) / (length * (length - 1));
+        variances.push(variance);
+        length = variances.length;
+        if(length > 20) {
+            variances.shift();
+            length--;
+        }
+        for (var i = length - 1; i >= 0; i--){
+            varAvg += variances[i];
+        };
+        varAvg /= length;
+        
+        before_last_variance = variances[length - 3];
+        last_variance = variances[length - 2];
+        // console.log(before_last_variance, last_variance, variance, varAvg);
+        if(before_last_variance < last_variance && last_variance > variance && variance > varAvg) {
             fire();
         }
-        
-        before_last_variance = last_variance;
-        last_variance = variance;
-        
-        draw();
     }
     
     function doAnimate() {
         if(animate) {
             requestAnimationFrame(doAnimate);
-            render();
             update();
+            draw();
         }
     }
     

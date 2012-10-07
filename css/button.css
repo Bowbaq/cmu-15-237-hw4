@@ -1,0 +1,67 @@
+/* ----------------------------
+Author: Anders Haig = minim.co
+Version: 1.1
+File: CSS Styles
+---------------------------- */
+
+/* GLOBAL */
+
+
+input[type=submit],label,select,.pointer {
+    cursor: pointer;
+}
+
+
+/* STANDARD */
+
+
+#playlist li a {
+    position: relative;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 12px;
+    font-family: Arial,sans-serif;
+    height: 40px;
+    line-height: 40px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    color: #FFF;
+    text-shadow: 0px 1px 2px #000000;
+    text-shadow: 0px 1px 2px rgba(0,0,0,0.3);
+    filter: dropshadow(color=#000000, offx=0, offy=1);
+    text-decoration: none;
+    width: 200px;
+    -webkit-box-shadow: 0px 3px 3px rgba(0,0,0,0.2),inset 0px 1px 0px rgba(255,255,255,0.25);
+    -moz-box-shadow: 0px 3px 3px rgba(0,0,0,0.2),inset 0px 1px 0px rgba(255,255,255,0.25);
+    box-shadow: 0px 3px 3px rgba(0,0,0,0.2),inset 0px 1px 0px rgba(255,255,255,0.25);
+}
+
+#playlist li a alt title {
+    font-weight: normal;
+    background: none;
+    display: inline;
+}
+
+#playlist li a {
+    background: #618398;
+    background: -moz-linear-gradient(top, #618398 0%, #618398 50%, #587789 50%, #587789 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#618398), color-stop(50%,#618398), color-stop(50%,#587789), color-stop(100%,#587789));
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#618398', endColorstr='#587789',GradientType=0 );
+    background: -o-linear-gradient(top, #618398 0%,#618398 50%,#618398 50%,#587789 100%);
+}
+
+#playlist li a:hover {
+    background: #7098AF;
+    background: -moz-linear-gradient(top, #7098AF 0%, #7098AF 50%, #688CA0 50%, #688CA0 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7098AF), color-stop(50%,#7098AF), color-stop(50%,#688CA0), color-stop(100%,#688CA0));
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7098AF', endColorstr='#688CA0',GradientType=0 );
+    background: -o-linear-gradient(top, #7098AF 0%,#7098AF 50%,#688CA0 50%,#688CA0 100%);
+}
+
+#playlist li a:active {
+    -webkit-box-shadow: inset 0 3px 3px rgba(0,0,0,0.2);
+    -moz-box-shadow: inset 0 3px 3px rgba(0,0,0,0.2);
+    box-shadow: inset 0 3px 3px rgba(0,0,0,0.2);
+    position: relative;
+    top: 1px;
+}
