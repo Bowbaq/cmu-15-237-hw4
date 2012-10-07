@@ -1,7 +1,8 @@
 var App = (function (app) {
     'use strict';
     
-    var _mixes = [];
+    var _mixes = [],
+        _currMix = 0;
     
     // Initialze visualizer
     function setupVisualizer() {
@@ -29,16 +30,18 @@ var App = (function (app) {
             }
             
             // Show the control bar on the first search
-            $('#controls-bar').removeClass('visuallyhidden');
+            $('#controls-bar').removeClass('visually-hidden');
 
             // Stop playing current sound on new search
             ML.clear();
             EightTracks.find(search, function(mixes) {
                 if(mixes.length > 0) {
                     _mixes = mixes;
-                    nextMix();
+                    _currMix = 0;
+                    changeMix();
                 } else {
                     $('#playlist ul').html("<li>No results found</li>");
+                    $('#playlist ul').removeClass('visually-hidden');
                 }
             });
 
@@ -94,7 +97,7 @@ var App = (function (app) {
     }
     
     function updateCover() {
-        var url = _mixes[0].cover;
+        var url = _mixes[_currMix].cover;
         if(url !== undefined && url !== null && url !== '') {
             $('#music-controls').css('background-image', 'url("' + url + '")');
         } else {
@@ -109,31 +112,38 @@ var App = (function (app) {
     
     function updatePlaylist(mixes) {
         var list = $('#playlist > ul'),
-            item = '<li><a href="#" alt="{{desc}}" title="{{desc}}"><i class="{{class}}"></i>{{name}}</a></li>\n',
-            firstMix = mixes.shift()
+            item = '<li data-mix-id={{id}}><a href="#" alt="{{desc}}" title="{{desc}}"><i class="{{class}}"></i>{{name}}</a></li>\n',
+            mix, li
         ;
         
+        list.addClass('visually-hidden');
         list.html('');
-        mixes.forEach(function(mix) {
-            list.append(
-                item.replace('{{desc}}', mix.desc)
-                    .replace('{{desc}}', mix.desc)
-                    .replace('{{name}}', mix.name)
-                    .replace('{{class}}', 'icon-play hover-show')
-                );
-        });
+        for (var i = 0; i < _mixes.length; i++){
+            mix = _mixes[i];
+            li = item.replace('{{desc}}', mix.desc)
+                .replace('{{desc}}', mix.desc)
+                .replace('{{name}}', mix.name)
+                .replace('{{id}}', i);
+            
+            if(i == _currMix) {
+                list.append(li.replace('{{class}}', 'icon-music'));
+            } else {
+                list.append(li.replace('{{class}}', 'icon-play hover-show'));
+            }
+        };
 		
-		list.prepend(
-		    item.replace('{{desc}}', firstMix.desc)
-		    .replace('{{desc}}', firstMix.desc)
-		    .replace('{{name}}', firstMix.name)
-		    .replace('{{class}}', 'icon-music')
-		);
+		list.children().click(function() {
+		    console.log(_currMix);
+		    _currMix = $(this).attr('data-mix-id');
+		    console.log(_currMix);
+		    changeMix();
+		});
+		
+		list.removeClass('visually-hidden');
     }
     
-    function nextMix() {
-        var mix;
-        if (_mixes.length > 0) {
+    function changeMix() {
+        if (_mixes.length > 0 && _currMix < _mixes.length) {
             updatePlaylist(_mixes);
             updateCover();
             nextSong();
@@ -144,14 +154,14 @@ var App = (function (app) {
     
     function nextSong() {
         if (_mixes.length > 0) {
-            if(_mixes[0].set === undefined) {
-                EightTracks.requestplay(_mixes[0], playSong);
-            } else if(!_mixes[0].set.at_end) {
-                EightTracks.requestnext(_mixes[0], playSong);
-            } else {
+            if(_mixes[_currMix].set === undefined) {
+                EightTracks.requestplay(_mixes[_currMix], playSong);
+            } else if(!_mixes[_currMix].set.at_end) {
+                EightTracks.requestnext(_mixes[_currMix], playSong);
+            } else if(_currMix < _mixes.length - 1) {
                 // Next mix
-                _mixes.shift();
-                nextMix();
+                _currMix++;
+                changeMix();
             }
         }
     }

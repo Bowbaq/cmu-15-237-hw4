@@ -115,6 +115,7 @@ html, body {
     left: 0;
     
     width: 360px;
+    height: 732px;
     padding: 0px 20px;
     margin: 10px;
     
@@ -132,8 +133,7 @@ html, body {
 #controls .box  {
     width: 100%;
     margin-bottom: 20px;
-/*    border-top: 1px solid rgba(200, 200, 200, 0.5);
-*/}
+}
 
 #music-controls.box {
     border-top: none;
@@ -141,7 +141,7 @@ html, body {
     
     margin-top: 20px;
     
-    background-image: url('../img/unknown.jpg');
+    background-image: url('../img/initial_logo.png');
     background-size: contain;
     
     -webkit-border-radius: 10px;
@@ -165,6 +165,7 @@ html, body {
     padding: 10px;
     
     color: white;
+    oopacity: 1;
     background-color: rgba(30, 30, 30, 0.3);
     
     -webkit-transition: all 0.2s ease-in-out;
@@ -172,10 +173,19 @@ html, body {
     -o-transition: all 0.2s ease-in-out;
     transition: all 0.2s ease-in-out;
     
+    -webkit-transition: opacity 2s ease-in-out;
+    -moz-transition: opacity 2s ease-in-out;
+    -o-transition: opacity 2s ease-in-out;
+    transition: opacity 2s ease-in-out;
+    
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     -o-border-radius: 5px;
     border-radius: 5px;
+}
+
+#controls-bar.visually-hidden {
+    opacity: 0;
 }
 
 #controls-bar:hover {
@@ -341,6 +351,18 @@ html, body {
 #playlist ul {
     list-style: none;
     padding: 0;
+    
+    color: white;
+    opacity: 1;
+    
+    -webkit-transition: opacity 2s ease-in;
+    -moz-transition: opacity 2s ease-in;
+    -o-transition: opacity 2s ease-in;
+    transition: opacity 2s ease-in;
+}
+
+#playlist ul.visually-hidden {
+    opacity: 0;
 }
 
 #playlist ul li {

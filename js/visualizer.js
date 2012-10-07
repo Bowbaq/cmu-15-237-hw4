@@ -5,7 +5,9 @@ Ball.prototype = {
     update: function(delta) {
         this.x += (this.vx * delta);
         this.y -= (this.vy * delta);
-        this.r -= (3 * delta);
+        if(this.r > 3) {
+            this.r -= (3 * delta);
+        }
     },
     draw: function(ctx) {		
 		//Time for some colors
@@ -19,7 +21,7 @@ Ball.prototype = {
 		ctx.arc(this.x, this.y, this.r, Math.PI * 2, false);
 		ctx.fill();
     },
-    init: function(x, y, r, speed, fr, fg, fb) {
+    init: function(x, y, r, speed, cr, cg, cb) {		
         var theta = Math.random() * 2 * Math.PI;
         if(r > 50) {
             r = 50;
@@ -32,17 +34,12 @@ Ball.prototype = {
         this.vx = (speed - 6 * this.r) * Math.sin(theta);
         this.vy = (speed - 6 * this.r) * Math.cos(theta);
 
-        //Random colors
-    	var r = fr * 255 >> 0;
-    	var g = fg * 255 >> 0;
-    	var b = fb * 255 >> 0;
-
     	this.gradient = [
     	    [0, "white"], 
     	    [0.4, "rgba(255, 255, 255, 0.5)"], 
-    	    [0.4, "rgba(" + r + ", " + g + ", " + b + ", 0.5)"],
+    	    [0.4, "rgba(" + cr + ", " + cg + ", " + cb + ", 0.5)"],
     	    [1, "rgba(0, 0, 0, 0.3)"]
-    	];
+    	];    	
     }
 };
 
@@ -82,9 +79,8 @@ var Visualizer = (function(viz) {
     ;
     
     function update() {
-        var max = Math.max.apply(null, timeByteData), min = Math.min.apply(null, timeByteData),
-            fqSum = 0, fqSqSum = 0, varAvg = 0, before_last_variance, last_variance, variance,
-            length, f
+        var fqSum = 0, fqSqSum = 0, varAvg = 0, before_last_variance, last_variance, variance,
+            length, f, max, min
         ;
         
         analyser.smoothingTimeConstant = 0.1;
@@ -97,8 +93,6 @@ var Visualizer = (function(viz) {
             fqSum += f;
             fqSqSum += f * f;
         }
-        
-        size_factor = (max - min) / max;
         
         variance = (length * fqSqSum - fqSum * fqSum) / (length * (length - 1));
         variances.push(variance);
@@ -114,8 +108,10 @@ var Visualizer = (function(viz) {
         
         before_last_variance = variances[length - 3];
         last_variance = variances[length - 2];
-        // console.log(before_last_variance, last_variance, variance, varAvg);
         if(before_last_variance < last_variance && last_variance > variance && variance > varAvg) {
+            max = Math.max.apply(null, timeByteData);
+            min = Math.min.apply(null, timeByteData);
+            size_factor = (max - min) / max;
             fire();
         }
     }
@@ -129,18 +125,15 @@ var Visualizer = (function(viz) {
     }
     
     function inBounds(b) {
-        var inb =  b.x - b.r > 0 && b.x + b.r < canvas.width && b.y - b.r > 0 && b.y + b.r < canvas.height;
-        if(!inb) {
-            pool.releaseBall(b);
-        } 
-        
+        var inb =  (b.x - b.r > 0 && b.x + b.r < canvas.width && b.y - b.r > 0 && b.y + b.r < canvas.height) || b.r < 4 ;
         return inb;
     }
     
     function draw() {
-        var now = Date.now();
-        var delta = (now - last_time) / 1000;
-        var b, tmp, currBalls = [];
+        var now = Date.now(),
+            delta = (now - last_time) / 1000,
+            b
+        ;
         
         // Draw background
         ctx.globalCompositeOperation = "source-over";
@@ -148,34 +141,35 @@ var Visualizer = (function(viz) {
     	ctx.fillRect(0, 0, canvas.width, canvas.height);
         
         last_time = now;
-        
         balls = balls.filter(inBounds);
-        
         for (var i = balls.length - 1; i >= 0; i--){
             b = balls[i];
+            if(!inBounds(b)) {
+                pool.releaseBall(b);
+                continue;
+            }
             b.update(delta);
             b.draw(ctx);
-        };        
+        };
     };
     
     function fire() {
-        var b,
-            r = Math.random(),
-            g = Math.random(),
-            b = Math.random(),
-            speed = Math.random() * 200 + 600
-        ;
+        var ball, speed = Math.random() * 200 + 600,
+            color = size_factor * 16777216,
+            r = (color & 0xFF0000) >> 16,
+            g = (color & 0x00FF00) >> 8,
+            b = color & 0x0000FF;
         
-        for (var i = Math.random() * 7 + 10; i > 0; i--){
-            b = pool.getBall();
-            b.init(
+        for (var i = Math.random() * 5 + 10; i > 0; i--){
+            ball = pool.getBall();
+            ball.init(
                 canvas.width / 2, 
                 canvas.height / 2, 
                 15 / size_factor,
                 speed,
                 r, g, b
             );
-            balls.push(b);
+            balls.push(ball);
         };
     };
         
