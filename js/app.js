@@ -106,8 +106,10 @@ var App = (function (app) {
     }
     
     function updateTrackInfo(track) {
-        $('#track-name').text(track.name);
-        $('#track-artist').text(track.performer);
+        var name = (track.name.length > 20) ? track.name.substr(0, 20) + '...' : track.name;
+        var perf = (track.performer.length > 32) ? track.performer.substr(0, 32) + '...' : track.performer;
+        $('#track-name').text(name);
+        $('#track-artist').text(perf);
     }
     
     function updatePlaylist(mixes) {
@@ -133,9 +135,7 @@ var App = (function (app) {
         };
 		
 		list.children().click(function() {
-		    console.log(_currMix);
 		    _currMix = $(this).attr('data-mix-id');
-		    console.log(_currMix);
 		    changeMix();
 		});
 		
@@ -167,7 +167,8 @@ var App = (function (app) {
     }
     
     function playSong(set) {
-        _mixes[0].set = set;
+        console.log(set);
+        _mixes[_currMix].set = set;
         ML.pause();
         ML.load(set.track.url);
         ML.play();

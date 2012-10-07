@@ -154,7 +154,7 @@ var Visualizer = (function(viz) {
     };
     
     function fire() {
-        var ball, speed = Math.random() * 200 + 600,
+        var ball, speed = Math.random() * 200 + 1000,
             color = size_factor * 16777216,
             r = (color & 0xFF0000) >> 16,
             g = (color & 0x00FF00) >> 8,

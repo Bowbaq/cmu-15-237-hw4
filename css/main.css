@@ -168,10 +168,10 @@ html, body {
     oopacity: 1;
     background-color: rgba(30, 30, 30, 0.3);
     
-    -webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: all 0.2s ease-in-out;
-    -o-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out;
+    -webkit-transition: background-color 0.2s ease-in-out;
+    -moz-transition: background-color 0.2s ease-in-out;
+    -o-transition: background-color 0.2s ease-in-out;
+    transition: background-color 0.2s ease-in-out;
     
     -webkit-transition: opacity 2s ease-in-out;
     -moz-transition: opacity 2s ease-in-out;
@@ -194,6 +194,11 @@ html, body {
 
 #track-info {
     margin-bottom: 10px;
+}
+
+#track-name, #track-artist {
+    margin: 0 0 5px 0;
+    overflow: hidden;
 }
 
 #track-name {
@@ -389,6 +394,13 @@ html, body {
 
 #playlist a:hover i.hover-show, #playlist a:active i.hover-show {
     visibility: visible;
+}
+
+#disclaimer {
+    color: white;
+    margin: 200px;
+    font: 50px 'Lobster', cursive;
+    text-align: center;
 }
 
 /* ==========================================================================
